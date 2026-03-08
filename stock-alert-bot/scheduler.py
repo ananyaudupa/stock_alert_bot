@@ -1,8 +1,6 @@
-import schedule
-import time
-from datetime import datetime
 from fetch_stocks import get_market_data
 from bot import send_message
+from datetime import datetime
 
 
 def job():
@@ -16,7 +14,6 @@ def job():
     message += "🟢 Top 2 Gainers\n\n"
 
     for g in gainers:
-
         gap = g["price"] - g["prev_close"]
 
         message += (
@@ -30,7 +27,6 @@ def job():
     message += "🔴 Top 2 Losers\n\n"
 
     for l in losers:
-
         gap = l["price"] - l["prev_close"]
 
         message += (
@@ -44,8 +40,5 @@ def job():
     send_message(message)
 
 
-schedule.every().day.at("09:20").do(job)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+if __name__ == "__main__":
+    job()
