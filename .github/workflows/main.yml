@@ -19,9 +19,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r stock-alert-bot/requirements.txt
 
       - name: Run Stock Bot
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: python scheduler.py
+        run: python stock-alert-bot/scheduler.py
