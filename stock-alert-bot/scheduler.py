@@ -1,5 +1,6 @@
 import schedule
 import time
+from datetime import datetime
 from fetch_stocks import get_market_data
 from bot import send_message
 
@@ -8,21 +9,43 @@ def job():
 
     gainers, losers = get_market_data()
 
-    message = "Market Open Update\n\n"
+    now = datetime.now().strftime("%H:%M")
 
-    message += "Top 2 Gainers:\n"
+    message = f"📊 Pre-Open Market Update ({now})\n\n"
+
+    message += "🟢 Top 2 Gainers\n\n"
+
     for g in gainers:
-        message += f"{g['symbol']} +{g['percentChange']}%\n"
 
-    message += "\nTop 2 Losers:\n"
+        gap = g["price"] - g["prev_close"]
+
+        message += (
+            f"{g['symbol']}\n"
+            f"Price: ₹{g['price']}\n"
+            f"Prev Close: ₹{g['prev_close']}\n"
+            f"Change: +{g['percentChange']}%\n"
+            f"Gap: ₹{round(gap,2)}\n\n"
+        )
+
+    message += "🔴 Top 2 Losers\n\n"
+
     for l in losers:
-        message += f"{l['symbol']} {l['percentChange']}%\n"
+
+        gap = l["price"] - l["prev_close"]
+
+        message += (
+            f"{l['symbol']}\n"
+            f"Price: ₹{l['price']}\n"
+            f"Prev Close: ₹{l['prev_close']}\n"
+            f"Change: {l['percentChange']}%\n"
+            f"Gap: ₹{round(gap,2)}\n\n"
+        )
 
     send_message(message)
 
 
-
 schedule.every().day.at("09:20").do(job)
+
 while True:
     schedule.run_pending()
     time.sleep(1)

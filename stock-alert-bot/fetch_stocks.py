@@ -17,19 +17,21 @@ def get_market_data():
 
     response = session.get(url, headers=headers)
 
-    json_data = response.json()
+    data = response.json()["data"]
 
     stocks = []
 
-    for item in json_data["data"]:
+    for item in data:
         info = item["metadata"]
 
         stocks.append({
             "symbol": info["symbol"],
+            "price": info["lastPrice"],
+            "prev_close": info["previousClose"],
             "percentChange": info["pChange"]
         })
 
-    # sort stocks
+    # sort by percent change
     sorted_stocks = sorted(stocks, key=lambda x: x["percentChange"], reverse=True)
 
     gainers = sorted_stocks[:2]

@@ -1,7 +1,10 @@
 import requests
 import os
+from dotenv import load_dotenv
 
-TOKEN  = os.getenv("BOT_TOKEN")
+load_dotenv()
+
+TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = "5843348565"
 
 def send_message(message):
